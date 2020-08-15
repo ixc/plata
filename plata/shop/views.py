@@ -44,7 +44,7 @@ def order_cart_validates(order, shop, request, **kwargs):
 
     try:
         order.validate(order.VALIDATE_CART)
-    except ValidationError, e:
+    except ValidationError as e:
         for message in e.messages:
             messages.error(request, message)
         return shop.redirect('plata_shop_cart')
@@ -115,7 +115,7 @@ class Shop(object):
         # everywhere using plata.shop_instance()
         plata.register(self)
 
-        for key, value in kwargs.items():
+        for key, value in list(kwargs.items()):
             if not hasattr(self, key):
                 raise TypeError('%s() received an invalid keyword %r' % (
                     self.__class__.__name__, key))
@@ -193,7 +193,7 @@ class Shop(object):
         all_modules = [get_callable(module)(self) for module in plata.settings.PLATA_PAYMENT_MODULES]
         if not request:
             return all_modules
-        return filter(lambda item: item.enabled_for_request(request), all_modules)
+        return [item for item in all_modules if item.enabled_for_request(request)]
 
     def default_currency(self, request=None):
         """

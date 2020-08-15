@@ -187,7 +187,7 @@ class Order(BillingShippingAddress):
         """
         if self._order_id:
             return self._order_id
-        return u'No. %d' % self.id
+        return 'No. %d' % self.id
 
     def recalculate_total(self, save=True):
         """
@@ -309,7 +309,7 @@ class Order(BillingShippingAddress):
         - ``Order.VALIDATE_ALL``
         """
 
-        for g in sorted(g for g in self.VALIDATORS.keys() if g<=group):
+        for g in sorted(g for g in list(self.VALIDATORS.keys()) if g<=group):
             for validator in self.VALIDATORS[g]:
                 validator(self)
 
@@ -469,7 +469,7 @@ class OrderItem(models.Model):
         verbose_name_plural = _('order items')
 
     def __unicode__(self):
-        return _(u'%(quantity)s of %(product)s') % {'quantity': self.quantity,
+        return _('%(quantity)s of %(product)s') % {'quantity': self.quantity,
                                                     'product': self.product}
 
     @property
@@ -532,7 +532,7 @@ class OrderStatus(models.Model):
         verbose_name_plural = _('order statuses')
 
     def __unicode__(self):
-        return (_(u'Status %(status)s for %(order)s') % {
+        return (_('Status %(status)s for %(order)s') % {
             'status': self.get_status_display(),
             'order': self.order})
 
@@ -605,9 +605,9 @@ class OrderPayment(models.Model):
     objects = OrderPaymentManager()
 
     def __unicode__(self):
-        return (_(u'%(authorized)s of %(currency)s %(amount).2f for %(order)s')
-                % {'authorized': self.authorized and _(u'Authorized')
-                        or _(u'Not authorized'),
+        return (_('%(authorized)s of %(currency)s %(amount).2f for %(order)s')
+                % {'authorized': self.authorized and _('Authorized')
+                        or _('Not authorized'),
                    'currency': self.currency,
                    'amount': self.amount,
                    'order': self.order})
@@ -625,7 +625,7 @@ class OrderPayment(models.Model):
         self._recalculate_paid()
 
         if self.currency != self.order.currency:
-            self.order.notes += u'\n' + _('Currency of payment %s does not match.') % self
+            self.order.notes += '\n' + _('Currency of payment %s does not match.') % self
             self.order.save()
 
     def delete(self, *args, **kwargs):
@@ -660,7 +660,7 @@ class PriceBase(models.Model):
                                   related_name='+')
 
     def __unicode__(self):
-        return u'%s %.2f' % (self.currency, self.unit_price)
+        return '%s %.2f' % (self.currency, self.unit_price)
 
     def handle_order_item(self, item):
         """

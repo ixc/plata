@@ -42,8 +42,8 @@ source_suffix = '.txt'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Plata'
-copyright = u'2010, Feinheit GmbH and contributors'
+project = 'Plata'
+copyright = '2010, Feinheit GmbH and contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -181,8 +181,8 @@ latex_font_size = '10pt'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Plata.tex', u'Plata Documentation',
-   u'Feinheit GmbH and contributors', 'manual'),
+  ('index', 'Plata.tex', 'Plata Documentation',
+   'Feinheit GmbH and contributors', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

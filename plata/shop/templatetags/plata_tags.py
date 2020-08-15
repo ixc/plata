@@ -50,7 +50,7 @@ def form_items(form):
 
         {% form_items form %}
     """
-    return u''.join(render_to_string('_form_item.html', {
+    return ''.join(render_to_string('_form_item.html', {
         'item': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'type_class': _type_class(field),
@@ -115,7 +115,7 @@ class FormErrorsNode(template.Node):
             try:
                 var = item.resolve(context)
                 if isinstance(var, dict):
-                    items.extend(var.values())
+                    items.extend(list(var.values()))
                 elif isinstance(var, (list, tuple)):
                     items.extend(var)
                 else:
@@ -139,7 +139,7 @@ class FormErrorsNode(template.Node):
                 errors = True
 
         if not errors:
-            return u''
+            return ''
 
         return render_to_string('_form_errors.html', {
             'forms': form_list,

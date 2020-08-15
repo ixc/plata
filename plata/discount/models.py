@@ -99,8 +99,8 @@ class DiscountBase(models.Model):
         orderitems = order.items.model._default_manager.filter(
             id__in=[item.id for item in items])
 
-        for key, parameters in self.config.items():
-            parameters = dict((str(k), v) for k, v in parameters.items())
+        for key, parameters in list(self.config.items()):
+            parameters = dict((str(k), v) for k, v in list(parameters.items()))
 
             cfg = dict(self.CONFIG_OPTIONS)[key]
 
@@ -124,7 +124,7 @@ class DiscountBase(models.Model):
         elif self.type == self.MEANS_OF_PAYMENT:
             self._apply_means_of_payment(order, items)
         else:
-            raise NotImplementedError, 'Unknown discount type %s' % self.type
+            raise NotImplementedError('Unknown discount type %s' % self.type)
 
     def _apply_amount_discount(self, order, items, tax_included):
         """
@@ -176,7 +176,7 @@ class DiscountBase(models.Model):
 RANDOM_CODE_CHARACTERS = '23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ'
 
 def generate_random_code():
-    return u''.join(random.sample(RANDOM_CODE_CHARACTERS, 10))
+    return ''.join(random.sample(RANDOM_CODE_CHARACTERS, 10))
 
 
 class Discount(DiscountBase):

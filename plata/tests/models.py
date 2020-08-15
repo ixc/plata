@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
-import StringIO
+import io
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -392,7 +392,7 @@ class ModelTest(PlataTest):
 
         try:
             d.validate(order)
-        except ValidationError, e:
+        except ValidationError as e:
             self.assertEqual(len(e.messages), 2)
 
         d.is_active = True
@@ -400,7 +400,7 @@ class ModelTest(PlataTest):
 
         try:
             d.validate(order)
-        except ValidationError, e:
+        except ValidationError as e:
             self.assertEqual(len(e.messages), 2)
 
     def test_11_multiple_discounts(self):
@@ -836,7 +836,7 @@ class ModelTest(PlataTest):
     def test_24_uninitialized_order(self):
         # This should not crash; generating a PDF exercises the methods
         # and properties of the order
-        plata.reporting.order.invoice_pdf(PDFDocument(StringIO.StringIO()),
+        plata.reporting.order.invoice_pdf(PDFDocument(io.StringIO()),
             Order.objects.create())
 
     def test_25_discount_validation(self):
@@ -942,14 +942,14 @@ class ModelTest(PlataTest):
         product = Product.objects.create(name='Test Product',)
         order = self.create_order()
         orderitem = self.create_orderitem(product, order)
-        self.assertEqual(unicode(orderitem),
-                         u'1 of Test Product')
+        self.assertEqual(str(orderitem),
+                         '1 of Test Product')
         orderstatus = OrderStatus.objects.create(order=order, status=Order.PAID)
-        self.assertEqual(unicode(orderstatus),
-                         u'Status Order has been paid for O-000000001')
+        self.assertEqual(str(orderstatus),
+                         'Status Order has been paid for O-000000001')
         orderpayment = OrderPayment.objects.create(
             order=order, currency=100, amount=1, authorized=date.today())
-        self.assertEqual(unicode(orderpayment),
-                         u'Authorized of 100 1.00 for O-000000001')
+        self.assertEqual(str(orderpayment),
+                         'Authorized of 100 1.00 for O-000000001')
 
 

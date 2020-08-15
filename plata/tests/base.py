@@ -37,7 +37,7 @@ def get_request(**kwargs):
     request.session = {}
     request.user = AnonymousUser()
 
-    for k, v in kwargs.items():
+    for k, v in list(kwargs.items()):
        setattr(request, k, v)
 
     return request
@@ -49,24 +49,24 @@ class PlataTest(TestCase):
     def assertRaisesWithCode(self, exception, fn, code):
         try:
             fn()
-        except exception, e:
+        except exception as e:
             if e.code == code:
                 return True
             raise
-        raise Exception, '%s did not raise %s' % (fn, exception)
+        raise Exception('%s did not raise %s' % (fn, exception))
 
     def setUp(self):
         plata.settings.PLATA_PRICE_INCLUDES_TAX = True
 
     def create_contact(self):
         return Contact.objects.create(
-            billing_company=u'BigCorp',
-            billing_first_name=u'Hans',
-            billing_last_name=u'Muster',
-            billing_address=u'Musterstrasse 42',
-            billing_zip_code=u'8042',
-            billing_city=u'Beispielstadt',
-            billing_country=u'CH',
+            billing_company='BigCorp',
+            billing_first_name='Hans',
+            billing_last_name='Muster',
+            billing_address='Musterstrasse 42',
+            billing_zip_code='8042',
+            billing_city='Beispielstadt',
+            billing_country='CH',
             shipping_same_as_billing=True,
             currency='CHF',
             user=User.objects.create_user('hans', 'hans', 'hans'),

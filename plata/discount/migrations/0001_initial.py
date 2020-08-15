@@ -17,7 +17,7 @@ class Migration(SchemaMigration):
             ('currency', self.gf('django.db.models.fields.CharField')(max_length=3, null=True, blank=True)),
             ('tax_class', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['shop.TaxClass'], null=True, blank=True)),
             ('config_json', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('code', self.gf('django.db.models.fields.CharField')(default=u'et4NXLbJoA', unique=True, max_length=30)),
+            ('code', self.gf('django.db.models.fields.CharField')(default='et4NXLbJoA', unique=True, max_length=30)),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('valid_from', self.gf('django.db.models.fields.DateField')(default=datetime.date.today)),
             ('valid_until', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),

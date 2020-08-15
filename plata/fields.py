@@ -18,8 +18,8 @@ except TypeError:
 
 
 #: Field offering all defined currencies
-CurrencyField = curry(models.CharField, _('currency'), max_length=3, choices=zip(
-    plata.settings.CURRENCIES, plata.settings.CURRENCIES))
+CurrencyField = curry(models.CharField, _('currency'), max_length=3, choices=list(zip(
+    plata.settings.CURRENCIES, plata.settings.CURRENCIES)))
 
 
 def json_encode_default(o):
@@ -44,7 +44,7 @@ def json_encode_default(o):
     elif isinstance(o, decimal.Decimal):
         return str(o)
 
-    raise TypeError, 'Cannot encode %r' % o
+    raise TypeError('Cannot encode %r' % o)
 
 
 class JSONFormField(forms.fields.CharField):
@@ -60,16 +60,13 @@ class JSONFormField(forms.fields.CharField):
         return super(JSONFormField, self).clean(value, *args, **kwargs)
 
 
-class JSONField(models.TextField):
+class JSONField(models.TextField, metaclass=models.SubfieldBase):
     """
     TextField which transparently serializes/unserializes JSON objects
 
     See:
     http://www.djangosnippets.org/snippets/1478/
     """
-
-    # Used so to_python() is called
-    __metaclass__ = models.SubfieldBase
 
     formfield = JSONFormField
 
@@ -78,7 +75,7 @@ class JSONField(models.TextField):
 
         if isinstance(value, dict):
             return value
-        elif isinstance(value, basestring):
+        elif isinstance(value, str):
             # Avoid asking the JSON decoder to handle empty values:
             if not value:
                 return {}
@@ -116,7 +113,7 @@ class JSONField(models.TextField):
             value = json.dumps(value, default=json_encode_default,
                 use_decimal=True)
 
-        assert isinstance(value, basestring)
+        assert isinstance(value, str)
 
         return value
 

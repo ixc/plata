@@ -62,10 +62,10 @@ A real-world example follows::
         weak=False)
 """
 
-from __future__ import with_statement
+
 
 import contextlib
-import StringIO
+import io
 
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage
@@ -81,7 +81,7 @@ class BaseHandler(object):
         from pdfdocument.document import PDFDocument
         from plata.reporting.order import invoice_pdf
 
-        with contextlib.closing(StringIO.StringIO()) as content:
+        with contextlib.closing(io.StringIO()) as content:
             pdf = PDFDocument(content)
             invoice_pdf(pdf, order)
             return content.getvalue()
@@ -90,7 +90,7 @@ class BaseHandler(object):
         from pdfdocument.document import PDFDocument
         from plata.reporting.order import packing_slip_pdf
 
-        with contextlib.closing(StringIO.StringIO()) as content:
+        with contextlib.closing(io.StringIO()) as content:
             pdf = PDFDocument(content)
             packing_slip_pdf(pdf, order)
             return content.getvalue()
@@ -104,7 +104,7 @@ class BaseHandler(object):
 
     def create_email_message(self, template_name, **kwargs):
         email = render_to_string(template_name, self.context(kwargs)).splitlines()
-        return EmailMessage(subject=email[0], body=u'\n'.join(email[2:]))
+        return EmailMessage(subject=email[0], body='\n'.join(email[2:]))
 
 
 class EmailHandler(BaseHandler):

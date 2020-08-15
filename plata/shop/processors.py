@@ -122,7 +122,7 @@ class TaxProcessor(ProcessorBase):
             self.add_tax_details(tax_details, item.tax_rate, item._line_item_price,
                 item._line_item_discount, item._line_item_tax)
 
-        order.data['tax_details'] = tax_details.items()
+        order.data['tax_details'] = list(tax_details.items())
 
 
 class ItemSummationProcessor(ProcessorBase):
@@ -178,7 +178,7 @@ class FixedAmountShippingProcessor(ProcessorBase):
         tax_details = dict(order.data.get('tax_details', []))
         self.add_tax_details(tax_details, tax, order.shipping_cost,
             order.shipping_discount, order.shipping_tax)
-        order.data['tax_details'] = tax_details.items()
+        order.data['tax_details'] = list(tax_details.items())
 
 
 class ApplyRemainingDiscountToShippingProcessor(ProcessorBase):
@@ -205,7 +205,7 @@ class OrderSummationProcessor(ProcessorBase):
         """
 
         total = sum(
-            self.get_processor_value('total').values(),
+            list(self.get_processor_value('total').values()),
             Decimal('0.00'),
             )
 

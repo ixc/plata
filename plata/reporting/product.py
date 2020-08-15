@@ -93,7 +93,7 @@ def product_xls():
 
     col = 10
     for type_id, type_name in StockTransaction.TYPE_CHOICES:
-        s.write(row, col, unicode(type_name), style=style.bold)
+        s.write(row, col, str(type_name), style=style.bold)
         col += 1
 
     row += 2
@@ -117,7 +117,7 @@ def product_xls():
         transactions.setdefault(t['product'], {})[t['type']] = t['change__sum']
 
     for product in plata.product_model().objects.all().select_related():
-        s.write(row, 0, unicode(product))
+        s.write(row, 0, str(product))
         s.write(row, 1, product.sku)
         s.write(row, 2, product.items_in_stock)
 

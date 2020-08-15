@@ -1,4 +1,4 @@
-import StringIO
+import io
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
@@ -16,7 +16,7 @@ def product_xls(request):
     """
     Returns an XLS containing product information
     """
-    output = StringIO.StringIO()
+    output = io.StringIO()
     workbook = plata.reporting.product.product_xls()
     workbook.save(output)
     response = HttpResponse(output.getvalue(), mimetype='application/vnd.ms-excel')
